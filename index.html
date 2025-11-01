@@ -651,7 +651,7 @@
                     <span class="module-level level-${module.level}">${module.level}</span>
                 `;
 
-                li.addEventListener('click', () => loadModule(moduleId));
+                li.addEventListener('click', (e) => loadModule(moduleId, e));
                 moduleList.appendChild(li);
             });
 
@@ -675,7 +675,7 @@
         }
 
         // Load module
-        function loadModule(moduleId) {
+        function loadModule(moduleId, event = null) {
             const module = knowledgeData.modules.find(m => m.id === moduleId);
             if (!module) return;
 
@@ -685,7 +685,19 @@
             document.querySelectorAll('.module-item').forEach(item => {
                 item.classList.remove('active');
             });
-            event.currentTarget?.classList.add('active');
+
+            // Add active class to clicked item (if event exists)
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            } else {
+                // If no event, find and activate the matching module item
+                const moduleItems = document.querySelectorAll('.module-item');
+                moduleItems.forEach(item => {
+                    if (item.textContent.includes(module.title)) {
+                        item.classList.add('active');
+                    }
+                });
+            }
 
             // Render module content
             const content = `
