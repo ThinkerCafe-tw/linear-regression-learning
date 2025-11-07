@@ -649,7 +649,210 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Modal for Markdown Viewer */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background-color: var(--bg-color);
+            margin: 2% auto;
+            padding: 0;
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 1200px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color), #2980b9);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .modal-close {
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .modal-body {
+            padding: 30px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .markdown-content {
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+
+        .markdown-content h1,
+        .markdown-content h2,
+        .markdown-content h3,
+        .markdown-content h4 {
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            color: var(--primary-color);
+        }
+
+        .markdown-content h1 {
+            font-size: 2em;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.3em;
+        }
+
+        .markdown-content h2 {
+            font-size: 1.6em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.3em;
+        }
+
+        .markdown-content h3 {
+            font-size: 1.3em;
+        }
+
+        .markdown-content pre {
+            background: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--primary-color);
+            position: relative;
+        }
+
+        .markdown-content code {
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .markdown-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .markdown-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1em 0;
+        }
+
+        .markdown-content table th,
+        .markdown-content table td {
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            text-align: left;
+        }
+
+        .markdown-content table th {
+            background: var(--card-bg);
+            font-weight: 600;
+        }
+
+        .markdown-content blockquote {
+            border-left: 4px solid var(--primary-color);
+            margin: 1em 0;
+            padding: 0.5em 1em;
+            background: var(--card-bg);
+            border-radius: 0 5px 5px 0;
+        }
+
+        .markdown-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin: 1em 0;
+        }
+
+        .markdown-content ul,
+        .markdown-content ol {
+            margin: 1em 0;
+            padding-left: 2em;
+        }
+
+        .markdown-content li {
+            margin: 0.5em 0;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            padding: 5px 10px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8em;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .markdown-content pre:hover .copy-button {
+            opacity: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button-group button {
+            flex: 1;
+        }
     </style>
+
+    <!-- Markdown Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body data-theme="light">
 
@@ -752,6 +955,24 @@
         <div class="loading" id="loading">
             <div class="spinner"></div>
             <p>載入中...</p>
+        </div>
+    </div>
+
+    <!-- Markdown Viewer Modal -->
+    <div id="markdownModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">教材內容</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="markdownContent" class="markdown-content">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>載入教材中...</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -953,9 +1174,14 @@
                         <button class="btn-primary" onclick="markAsCompleted('${module.id}')">
                             ✓ 標記為已完成
                         </button>
-                        <button class="btn-secondary" onclick="downloadMarkdown('${module.file}')">
-                            ⬇ 下載教材
-                        </button>
+                        <div class="button-group">
+                            <button class="btn-primary" onclick="viewMaterial('${module.file}', '${module.title}')">
+                                📖 在網頁中閱讀
+                            </button>
+                            <button class="btn-secondary" onclick="downloadMarkdown('${module.file}')">
+                                ⬇ 下載到本地
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
@@ -1030,9 +1256,97 @@
             localStorage.setItem('theme', newTheme);
         }
 
+        // View Material in Modal
+        async function viewMaterial(filename, title) {
+            const modal = document.getElementById('markdownModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const content = document.getElementById('markdownContent');
+
+            // Show modal
+            modal.style.display = 'block';
+            modalTitle.textContent = title;
+            content.innerHTML = '<div class="loading"><div class="spinner"></div><p>載入教材中...</p></div>';
+
+            try {
+                // Fetch markdown file
+                const response = await fetch(filename);
+                if (!response.ok) throw new Error('無法載入教材');
+
+                const markdown = await response.text();
+
+                // Configure marked options
+                marked.setOptions({
+                    breaks: true,
+                    gfm: true,
+                    highlight: function(code, lang) {
+                        if (lang && hljs.getLanguage(lang)) {
+                            try {
+                                return hljs.highlight(code, { language: lang }).value;
+                            } catch (err) {}
+                        }
+                        return hljs.highlightAuto(code).value;
+                    }
+                });
+
+                // Parse markdown to HTML
+                const html = marked.parse(markdown);
+                content.innerHTML = html;
+
+                // Add copy buttons to code blocks
+                const codeBlocks = content.querySelectorAll('pre code');
+                codeBlocks.forEach((block, index) => {
+                    const pre = block.parentElement;
+                    const button = document.createElement('button');
+                    button.className = 'copy-button';
+                    button.textContent = '複製';
+                    button.onclick = function() {
+                        navigator.clipboard.writeText(block.textContent).then(() => {
+                            button.textContent = '已複製！';
+                            setTimeout(() => button.textContent = '複製', 2000);
+                        });
+                    };
+                    pre.appendChild(button);
+                });
+
+                // Scroll to top of modal
+                document.querySelector('.modal-body').scrollTop = 0;
+
+            } catch (error) {
+                content.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--accent-color);">
+                        <h3>⚠️ 載入失敗</h3>
+                        <p>${error.message}</p>
+                        <p style="margin-top: 20px; color: var(--text-color);">
+                            請確認：<br>
+                            1. 已下載完整專案到本地<br>
+                            2. 在本地伺服器環境中開啟（如 <code>python3 -m http.server 8000</code>）<br>
+                            3. 教材檔案 <code>${filename}</code> 存在於專案目錄
+                        </p>
+                        <button class="btn-primary" onclick="closeModal()" style="margin-top: 20px;">關閉</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Close Modal
+        function closeModal() {
+            document.getElementById('markdownModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('markdownModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
         // Download Markdown
         function downloadMarkdown(filename) {
-            alert(`請直接開啟專案目錄中的 ${filename} 檔案`);
+            const link = document.createElement('a');
+            link.href = filename;
+            link.download = filename;
+            link.click();
         }
 
         // Load saved theme
