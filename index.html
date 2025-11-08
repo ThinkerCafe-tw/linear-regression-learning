@@ -134,33 +134,6 @@
             font-weight: 600;
         }
 
-        .learning-path-selector {
-            margin-bottom: 30px;
-            background: var(--bg-color);
-            padding: 18px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .learning-path-selector label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-color);
-        }
-
-        .learning-path-selector select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            background: var(--bg-color);
-            color: var(--text-color);
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
         .progress-container {
             margin-bottom: 30px;
             background: var(--bg-color);
@@ -508,11 +481,11 @@
             display: none;
             position: fixed;
             top: 60px;
-            left: var(--sidebar-width);
+            left: 0;
             right: 0;
             bottom: 0;
             background: var(--bg-color);
-            z-index: 100;
+            z-index: 1001;
             overflow: hidden;
         }
 
@@ -908,26 +881,15 @@
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <h2>學習路徑</h2>
-        <div class="learning-path-selector">
-            <label>選擇你的學習路徑：</label>
-            <select id="pathSelector" onchange="selectPath(this.value)">
-                <option value="all">完整學習（推薦）</option>
-                <option value="quick">快速實戰（45分鐘）</option>
-                <option value="standard">標準學習（4.5小時）</option>
-                <option value="research">研究導向（6-8小時）</option>
-            </select>
-        </div>
-
         <div class="progress-container">
-            <div class="progress-label">學習進度</div>
+            <div class="progress-label">📊 學習進度</div>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill" style="width: 0%"></div>
             </div>
             <div class="progress-text" id="progressText">0 / 4 完成 (0%)</div>
         </div>
 
-        <h2>教材目錄</h2>
+        <h2>📚 教材目錄</h2>
         <ul class="module-list" id="moduleList">
             <!-- Modules will be inserted here by JavaScript -->
         </ul>
@@ -944,19 +906,11 @@
 
             <div class="quick-start">
                 <h2>🚀 快速開始</h2>
-                <p>選擇適合你的學習路徑：</p>
+                <p>從左側選擇教材開始學習，或點擊下方按鈕直接開始：</p>
                 <div class="path-buttons">
-                    <div class="path-btn" onclick="selectPathAndStart('quick', 0)">
-                        <strong>快速實戰</strong>
-                        <small>45分鐘 | 立即開始分析</small>
-                    </div>
-                    <div class="path-btn" onclick="selectPathAndStart('standard', 0)">
-                        <strong>標準學習</strong>
-                        <small>4.5小時 | 理論+實作</small>
-                    </div>
-                    <div class="path-btn" onclick="selectPathAndStart('research', 0)">
-                        <strong>研究導向</strong>
-                        <small>6-8小時 | 完整精通</small>
+                    <div class="path-btn" onclick="startLearning(0)">
+                        <strong>📖 從第一章開始</strong>
+                        <small>R 快速上手指南 | 10分鐘</small>
                     </div>
                 </div>
             </div>
@@ -1126,10 +1080,8 @@
         // Render Module List
         function renderModuleList() {
             const moduleList = document.getElementById('moduleList');
-            const pathModules = learningPaths[currentPath];
 
             moduleList.innerHTML = modules
-                .filter((_, idx) => pathModules.includes(idx))
                 .map((module, idx) => `
                     <li class="module-item ${completedModules.includes(module.id) ? 'completed' : ''}"
                         onclick="openModuleReader('${module.id}')">
@@ -1142,18 +1094,9 @@
                 `).join('');
         }
 
-        // Select Path
-        function selectPath(path) {
-            currentPath = path;
-            renderModuleList();
-            updateProgress();
-        }
-
-        function selectPathAndStart(path, moduleIndex) {
-            currentPath = path;
-            document.getElementById('pathSelector').value = path;
-            renderModuleList();
-            const moduleId = modules[learningPaths[path][moduleIndex]].id;
+        // Start learning from a specific module
+        function startLearning(moduleIndex) {
+            const moduleId = modules[moduleIndex].id;
             openModuleReader(moduleId);
         }
 
@@ -1199,11 +1142,8 @@
 
         // Update Progress
         function updateProgress() {
-            const pathModules = learningPaths[currentPath];
-            const completed = modules.filter((m, idx) =>
-                pathModules.includes(idx) && completedModules.includes(m.id)
-            ).length;
-            const total = pathModules.length;
+            const completed = modules.filter(m => completedModules.includes(m.id)).length;
+            const total = modules.length;
             const percentage = Math.round((completed / total) * 100);
 
             document.getElementById('progressFill').style.width = percentage + '%';
@@ -1252,6 +1192,10 @@
 
             // Find current module
             currentReaderModule = modules.find(m => m.file === filename);
+
+            // Hide sidebar when opening reader
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.add('hidden');
 
             // Show reader
             readerMode.classList.add('active');
@@ -1454,6 +1398,10 @@
         function closeReader() {
             document.getElementById('readerMode').classList.remove('active');
             currentReaderModule = null;
+
+            // Show sidebar when closing reader
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.remove('hidden');
         }
 
         // Mark current module as completed (called from reader)
