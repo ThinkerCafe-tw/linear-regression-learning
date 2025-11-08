@@ -50,7 +50,17 @@ plt.close()
 
 # 2. 常態 Q-Q 圖
 plt.figure(figsize=(8, 6))
-stats.probplot(standardized_residuals, dist="norm", plot=plt)
+# 手動創建 Q-Q 圖，確保參考線是虛線
+theoretical_quantiles = stats.norm.ppf(np.linspace(0.01, 0.99, len(standardized_residuals)))
+sample_quantiles = np.sort(standardized_residuals)
+
+plt.scatter(theoretical_quantiles, sample_quantiles, alpha=0.7, color='steelblue', s=50)
+
+# 添加虛線參考線
+min_val = min(min(theoretical_quantiles), min(sample_quantiles))
+max_val = max(max(theoretical_quantiles), max(sample_quantiles))
+plt.plot([min_val, max_val], [min_val, max_val], 'r--', linewidth=2, alpha=0.8, label='理論常態線')
+
 plt.xlabel('理論分位數 (Theoretical Quantiles)', fontsize=12)
 plt.ylabel('標準化殘差 (Standardized Residuals)', fontsize=12)
 plt.title('常態 Q-Q 圖', fontsize=14, fontweight='bold')
@@ -100,7 +110,8 @@ axes[0,0].set_ylabel('殘差')
 axes[0,0].set_title('殘差 vs 配適值')
 axes[0,0].grid(True, alpha=0.3)
 
-stats.probplot(standardized_residuals, dist="norm", plot=axes[0,1])
+axes[0,1].scatter(theoretical_quantiles, sample_quantiles, alpha=0.7, color='steelblue', s=30)
+axes[0,1].plot([min_val, max_val], [min_val, max_val], 'r--', linewidth=2, alpha=0.8)
 axes[0,1].set_xlabel('理論分位數')
 axes[0,1].set_ylabel('標準化殘差')
 axes[0,1].set_title('常態 Q-Q 圖')
