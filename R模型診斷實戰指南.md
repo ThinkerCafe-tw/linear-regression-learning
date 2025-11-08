@@ -87,10 +87,14 @@ plot(model)
 ```
 
 執行後會看到四張圖：
-1. Residuals vs Fitted（殘差 vs 配適值）
-2. Normal Q-Q（常態性檢定）
-3. Scale-Location（尺度-位置圖）
-4. Residuals vs Leverage（殘差 vs 槓桿值）
+
+![線性迴歸診斷圖](img/diagnostic_plots_all.png)
+*▲ 線性迴歸的四張標準診斷圖*
+
+1. **Residuals vs Fitted**（殘差 vs 配適值）
+2. **Normal Q-Q**（常態性檢定）
+3. **Scale-Location**（尺度-位置圖）
+4. **Residuals vs Leverage**（殘差 vs 槓桿值）
 
 ---
 
@@ -104,15 +108,8 @@ plot(model)
 
 #### 理想狀況
 
-```
-     殘差
-      |
-    3 | ·   · ·   ·     ← 隨機散佈
-    0 |—————————————————  ← 紅線接近 y=0
-   -3 | ·  ·    · ·      ← 無系統性趨勢
-      |________________
-         配適值
-```
+![殘差 vs 配適值](img/diagnostic_plot_1.png)
+*▲ 殘差 vs 配適值：點隨機散佈，紅色虛線接近水平*
 
 **判斷準則**：
 - ✅ 點隨機散佈在 0 線上下
@@ -199,17 +196,8 @@ lines(lowess(fitted(model), residuals(model)), col = "blue", lwd = 2)
 
 #### 理想狀況
 
-```
-  標準化殘差
-      |
-    2 |       ·
-    1 |    ··
-    0 | ··      ← 點都在虛線上
-   -1 |  ··
-   -2 |   ·
-      |_____________
-       理論分位數
-```
+![常態 Q-Q 圖](img/diagnostic_plot_2.png)
+*▲ 常態 Q-Q 圖：點接近對角線表示殘差呈常態分布*
 
 **判斷準則**：
 - ✅ 點大致落在虛線上
@@ -303,15 +291,8 @@ shapiro.test(residuals(model))
 
 #### 理想狀況
 
-```
-  √|標準化殘差|
-      |
-    2 | · · ·  ·  ·  ← 隨機散佈
-    1 | ·  ·  · ·
-    0 |—————————————  ← 紅線水平
-      |_____________
-         配適值
-```
+![尺度-位置圖](img/diagnostic_plot_3.png)
+*▲ 尺度-位置圖：紅線接近水平，點的分散程度一致*
 
 **判斷準則**：
 - ✅ 紅線接近水平
@@ -387,17 +368,8 @@ bptest(model)
 
 #### 理想狀況
 
-```
-  標準化殘差
-      |
-    2 | ·  ·
-    0 |————·——·———
-   -2 |  ·    ·
-      |_____________
-         槓桿值
-
-    無點超出 Cook's D = 0.5 ✓
-```
+![殘差 vs 槓桿值](img/diagnostic_plot_4.png)
+*▲ 殘差 vs 槓桿值：無點超出 Cook's Distance 臨界線*
 
 ---
 
