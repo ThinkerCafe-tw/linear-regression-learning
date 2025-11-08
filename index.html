@@ -1110,8 +1110,9 @@
                         // Close reader and return to home
                         closeReader();
                     } else {
-                        // Fallback: try to load directly
-                        viewMaterial(filename, filename.replace('.md', ''));
+                        // Fallback: use link text as title
+                        const linkText = link.textContent.trim();
+                        viewMaterial(filename, linkText || '未知文件');
                     }
                 });
             });
