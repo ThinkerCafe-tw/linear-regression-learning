@@ -41,7 +41,8 @@
 
 3. 執行安裝檔，**全部使用預設設定**，一直按「下一步」即可
 
-【📸 截圖 ①：R 官網下載頁面 + Windows 安裝程式】
+![R 下載頁面](img/1.png)
+*▲ R 官網下載頁面（Windows 版本）*
 
 #### 2. 安裝 RStudio（強烈建議）
 1. 前往 https://posit.co/download/rstudio-desktop/
@@ -77,7 +78,8 @@
 - **環境區（右上）**：顯示你建立的變數和資料
 - **圖表區（右下）**：顯示繪圖結果
 
-【📸 截圖 ②：RStudio 完整介面，標註四個區域】
+![Posit Cloud 操作介面](img/2.png)
+*▲ Posit Cloud 介面示範（與 RStudio Desktop 相同）*
 
 ---
 
@@ -122,7 +124,8 @@ plot(mtcars$wt, mtcars$mpg,
 
 **觀察圖表**：你會發現車重越重，油耗數字越低（越耗油）
 
-【📸 截圖 ③：散佈圖，標註「明顯的負相關」】
+![車重與油耗散佈圖](img/3.png)
+*▲ 散佈圖顯示明顯的負相關：車重越重，油耗越低*
 
 ---
 
@@ -157,8 +160,6 @@ Residual standard error: 3.046 on 30 degrees of freedom
 Multiple R-squared:  0.7528,    Adjusted R-squared:  0.7446
 F-statistic: 91.38 on 1 and 30 DF,  p-value: 1.294e-10
 ```
-
-【📸 截圖 ④：summary(model) 完整輸出】
 
 ### 📌 第一次看結果：先忽略 90%
 
@@ -216,8 +217,6 @@ legend("topright",
        lty = c(NA, 1),
        lwd = c(NA, 2))
 ```
-
-【📸 截圖 ⑤：帶有紅色迴歸線的散佈圖】
 
 ---
 
