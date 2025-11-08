@@ -650,73 +650,143 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Modal for Markdown Viewer */
-        .modal {
+        /* Reader Mode */
+        .reader-mode {
             display: none;
             position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.7);
-            animation: fadeIn 0.3s;
+            top: 60px;
+            left: var(--sidebar-width);
+            right: 0;
+            bottom: 0;
+            background: var(--bg-color);
+            z-index: 100;
+            overflow: hidden;
         }
 
-        .modal-content {
-            background-color: var(--bg-color);
-            margin: 2% auto;
-            padding: 0;
-            border: 1px solid var(--border-color);
-            width: 90%;
-            max-width: 1200px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            max-height: 90vh;
+        .reader-mode.active {
             display: flex;
             flex-direction: column;
         }
 
-        .modal-header {
+        .reader-header {
             background: linear-gradient(135deg, var(--primary-color), #2980b9);
             color: white;
-            padding: 20px 30px;
-            border-radius: 10px 10px 0 0;
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 2px solid var(--border-color);
+            flex-shrink: 0;
         }
 
-        .modal-header h2 {
+        .reader-header h2 {
             margin: 0;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 600;
         }
 
-        .modal-close {
-            color: white;
-            font-size: 2rem;
-            font-weight: bold;
-            cursor: pointer;
-            background: none;
+        .reader-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .reader-close {
+            background: rgba(255,255,255,0.2);
             border: none;
-            padding: 0;
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
-            text-align: center;
-            border-radius: 50%;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
             transition: background 0.3s;
         }
 
-        .modal-close:hover {
-            background: rgba(255,255,255,0.2);
+        .reader-close:hover {
+            background: rgba(255,255,255,0.3);
         }
 
-        .modal-body {
-            padding: 30px;
-            overflow-y: auto;
+        .reader-container {
+            display: flex;
             flex: 1;
+            overflow: hidden;
+        }
+
+        .reader-toc {
+            width: 250px;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding: 20px;
+            flex-shrink: 0;
+        }
+
+        .reader-toc h3 {
+            margin: 0 0 15px 0;
+            font-size: 1rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+        }
+
+        .reader-toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .reader-toc li {
+            margin: 8px 0;
+        }
+
+        .reader-toc a {
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .reader-toc a:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .reader-toc .toc-h2 {
+            font-weight: 600;
+        }
+
+        .reader-toc .toc-h3 {
+            padding-left: 20px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .reader-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px 60px;
+            position: relative;
+        }
+
+        /* Reading Progress Bar */
+        .reading-progress {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            z-index: 10;
+        }
+
+        .reading-progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s;
         }
 
         .markdown-content {
@@ -814,19 +884,94 @@
             margin: 0.5em 0;
         }
 
+        /* Chapter Navigation */
+        .chapter-nav {
+            display: flex;
+            justify-content: space-between;
+            margin: 60px 0 40px;
+            padding: 20px 0;
+            border-top: 2px solid var(--border-color);
+            border-bottom: 2px solid var(--border-color);
+            gap: 20px;
+        }
+
+        .chapter-nav-btn {
+            flex: 1;
+            padding: 15px 25px;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .chapter-nav-btn:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .chapter-nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .chapter-nav-btn:disabled:hover {
+            background: var(--card-bg);
+            border-color: var(--border-color);
+            color: var(--text-color);
+            box-shadow: none;
+        }
+
+        .chapter-nav-label {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .chapter-nav-title {
+            font-weight: 600;
+        }
+
+        /* Copy Button */
         .copy-button {
             position: absolute;
-            top: 5px;
-            right: 5px;
-            padding: 5px 10px;
-            background: var(--primary-color);
+            top: 8px;
+            right: 8px;
+            padding: 6px 12px;
+            background: var(--success-color);
             color: white;
             border: none;
-            border-radius: 3px;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 0.8em;
+            font-weight: 500;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .copy-button:hover {
+            background: #229954;
+            transform: scale(1.05);
+        }
+
+        .copy-button.copied {
+            background: var(--primary-color);
+        }
+
+        .markdown-content pre {
+            position: relative;
         }
 
         .markdown-content pre:hover .copy-button {
@@ -845,6 +990,45 @@
 
         .button-group button {
             flex: 1;
+        }
+
+        /* Responsive Design for Reader */
+        @media (max-width: 1024px) {
+            .reader-toc {
+                width: 200px;
+            }
+
+            .reader-body {
+                padding: 30px 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .reader-mode {
+                left: 0;
+            }
+
+            .reader-toc {
+                position: absolute;
+                left: -250px;
+                top: 0;
+                bottom: 0;
+                z-index: 200;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+                transition: left 0.3s;
+            }
+
+            .reader-toc.visible {
+                left: 0;
+            }
+
+            .reader-body {
+                padding: 20px;
+            }
+
+            .chapter-nav {
+                flex-direction: column;
+            }
         }
     </style>
 
@@ -958,19 +1142,49 @@
         </div>
     </div>
 
-    <!-- Markdown Viewer Modal -->
-    <div id="markdownModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">教材內容</h2>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
+    <!-- Reader Mode -->
+    <div id="readerMode" class="reader-mode">
+        <div class="reader-header">
+            <h2 id="readerTitle">教材標題</h2>
+            <div class="reader-controls">
+                <button class="reader-close" onclick="closeReader()">✕ 關閉閱讀器</button>
             </div>
-            <div class="modal-body">
-                <div id="markdownContent" class="markdown-content">
+        </div>
+        <div class="reader-container">
+            <!-- TOC Sidebar -->
+            <div class="reader-toc" id="readerToc">
+                <h3>📑 目錄</h3>
+                <ul id="tocList">
+                    <!-- TOC will be generated here -->
+                </ul>
+            </div>
+            <!-- Content Area -->
+            <div class="reader-body" id="readerBody">
+                <div class="reading-progress">
+                    <div class="reading-progress-fill" id="readingProgressFill"></div>
+                </div>
+                <div id="readerContent" class="markdown-content">
                     <div class="loading">
                         <div class="spinner"></div>
                         <p>載入教材中...</p>
                     </div>
+                </div>
+                <!-- Chapter Navigation -->
+                <div class="chapter-nav" id="chapterNav" style="display: none;">
+                    <button class="chapter-nav-btn" id="prevChapterBtn" onclick="navigateChapter(-1)">
+                        <span>←</span>
+                        <div>
+                            <div class="chapter-nav-label">上一章</div>
+                            <div class="chapter-nav-title" id="prevChapterTitle">-</div>
+                        </div>
+                    </button>
+                    <button class="chapter-nav-btn" id="nextChapterBtn" onclick="navigateChapter(1)">
+                        <div>
+                            <div class="chapter-nav-label">下一章</div>
+                            <div class="chapter-nav-title" id="nextChapterTitle">-</div>
+                        </div>
+                        <span>→</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1256,16 +1470,25 @@
             localStorage.setItem('theme', newTheme);
         }
 
-        // View Material in Modal
-        async function viewMaterial(filename, title) {
-            const modal = document.getElementById('markdownModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const content = document.getElementById('markdownContent');
+        // Current module in reader
+        let currentReaderModule = null;
 
-            // Show modal
-            modal.style.display = 'block';
-            modalTitle.textContent = title;
-            content.innerHTML = '<div class="loading"><div class="spinner"></div><p>載入教材中...</p></div>';
+        // View Material in Reader Mode
+        async function viewMaterial(filename, title) {
+            const readerMode = document.getElementById('readerMode');
+            const readerTitle = document.getElementById('readerTitle');
+            const readerContent = document.getElementById('readerContent');
+            const tocList = document.getElementById('tocList');
+            const readerBody = document.getElementById('readerBody');
+
+            // Find current module
+            currentReaderModule = modules.find(m => m.file === filename);
+
+            // Show reader
+            readerMode.classList.add('active');
+            readerTitle.textContent = title;
+            readerContent.innerHTML = '<div class="loading"><div class="spinner"></div><p>載入教材中...</p></div>';
+            tocList.innerHTML = '';
 
             try {
                 // Fetch markdown file
@@ -1278,6 +1501,7 @@
                 marked.setOptions({
                     breaks: true,
                     gfm: true,
+                    headerIds: true,
                     highlight: function(code, lang) {
                         if (lang && hljs.getLanguage(lang)) {
                             try {
@@ -1290,29 +1514,28 @@
 
                 // Parse markdown to HTML
                 const html = marked.parse(markdown);
-                content.innerHTML = html;
+                readerContent.innerHTML = html;
+
+                // Generate TOC
+                generateTOC(readerContent, tocList);
 
                 // Add copy buttons to code blocks
-                const codeBlocks = content.querySelectorAll('pre code');
-                codeBlocks.forEach((block, index) => {
-                    const pre = block.parentElement;
-                    const button = document.createElement('button');
-                    button.className = 'copy-button';
-                    button.textContent = '複製';
-                    button.onclick = function() {
-                        navigator.clipboard.writeText(block.textContent).then(() => {
-                            button.textContent = '已複製！';
-                            setTimeout(() => button.textContent = '複製', 2000);
-                        });
-                    };
-                    pre.appendChild(button);
-                });
+                addCopyButtons(readerContent);
 
-                // Scroll to top of modal
-                document.querySelector('.modal-body').scrollTop = 0;
+                // Setup chapter navigation
+                setupChapterNavigation();
+
+                // Setup reading progress tracker
+                setupReadingProgress(readerBody);
+
+                // Add IDs to headings for TOC navigation
+                addHeadingIds(readerContent);
+
+                // Scroll to top
+                readerBody.scrollTop = 0;
 
             } catch (error) {
-                content.innerHTML = `
+                readerContent.innerHTML = `
                     <div style="text-align: center; padding: 40px; color: var(--accent-color);">
                         <h3>⚠️ 載入失敗</h3>
                         <p>${error.message}</p>
@@ -1322,23 +1545,146 @@
                             2. 在本地伺服器環境中開啟（如 <code>python3 -m http.server 8000</code>）<br>
                             3. 教材檔案 <code>${filename}</code> 存在於專案目錄
                         </p>
-                        <button class="btn-primary" onclick="closeModal()" style="margin-top: 20px;">關閉</button>
+                        <button class="btn-primary" onclick="closeReader()" style="margin-top: 20px;">關閉</button>
                     </div>
                 `;
             }
         }
 
-        // Close Modal
-        function closeModal() {
-            document.getElementById('markdownModal').style.display = 'none';
+        // Generate Table of Contents
+        function generateTOC(content, tocList) {
+            const headings = content.querySelectorAll('h2, h3');
+            if (headings.length === 0) {
+                tocList.innerHTML = '<li style="opacity: 0.5;">無目錄項目</li>';
+                return;
+            }
+
+            headings.forEach((heading, index) => {
+                const level = heading.tagName.toLowerCase();
+                const text = heading.textContent;
+                const id = `heading-${index}`;
+                heading.id = id;
+
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `#${id}`;
+                a.textContent = text;
+                a.className = `toc-${level}`;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                };
+
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
         }
 
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('markdownModal');
-            if (event.target === modal) {
-                closeModal();
+        // Add heading IDs
+        function addHeadingIds(content) {
+            const headings = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+            headings.forEach((heading, index) => {
+                if (!heading.id) {
+                    heading.id = `heading-${index}`;
+                }
+            });
+        }
+
+        // Add copy buttons to code blocks
+        function addCopyButtons(content) {
+            const codeBlocks = content.querySelectorAll('pre code');
+            codeBlocks.forEach((block) => {
+                const pre = block.parentElement;
+                const button = document.createElement('button');
+                button.className = 'copy-button';
+                button.innerHTML = '📋 複製';
+
+                button.onclick = async function() {
+                    try {
+                        await navigator.clipboard.writeText(block.textContent);
+                        button.innerHTML = '✓ 已複製';
+                        button.classList.add('copied');
+                        setTimeout(() => {
+                            button.innerHTML = '📋 複製';
+                            button.classList.remove('copied');
+                        }, 2000);
+                    } catch (err) {
+                        button.innerHTML = '✗ 失敗';
+                        setTimeout(() => button.innerHTML = '📋 複製', 2000);
+                    }
+                };
+
+                pre.appendChild(button);
+            });
+        }
+
+        // Setup chapter navigation
+        function setupChapterNavigation() {
+            const chapterNav = document.getElementById('chapterNav');
+            const prevBtn = document.getElementById('prevChapterBtn');
+            const nextBtn = document.getElementById('nextChapterBtn');
+            const prevTitle = document.getElementById('prevChapterTitle');
+            const nextTitle = document.getElementById('nextChapterTitle');
+
+            if (!currentReaderModule) {
+                chapterNav.style.display = 'none';
+                return;
             }
+
+            const currentIndex = modules.findIndex(m => m.id === currentReaderModule.id);
+            const prevModule = currentIndex > 0 ? modules[currentIndex - 1] : null;
+            const nextModule = currentIndex < modules.length - 1 ? modules[currentIndex + 1] : null;
+
+            // Previous chapter
+            if (prevModule) {
+                prevBtn.disabled = false;
+                prevTitle.textContent = prevModule.title;
+            } else {
+                prevBtn.disabled = true;
+                prevTitle.textContent = '無';
+            }
+
+            // Next chapter
+            if (nextModule) {
+                nextBtn.disabled = false;
+                nextTitle.textContent = nextModule.title;
+            } else {
+                nextBtn.disabled = true;
+                nextTitle.textContent = '無';
+            }
+
+            chapterNav.style.display = 'flex';
+        }
+
+        // Navigate to next/prev chapter
+        function navigateChapter(direction) {
+            if (!currentReaderModule) return;
+
+            const currentIndex = modules.findIndex(m => m.id === currentReaderModule.id);
+            const targetIndex = currentIndex + direction;
+
+            if (targetIndex >= 0 && targetIndex < modules.length) {
+                const targetModule = modules[targetIndex];
+                viewMaterial(targetModule.file, targetModule.title);
+            }
+        }
+
+        // Setup reading progress tracker
+        function setupReadingProgress(readerBody) {
+            const progressFill = document.getElementById('readingProgressFill');
+
+            readerBody.addEventListener('scroll', () => {
+                const scrollTop = readerBody.scrollTop;
+                const scrollHeight = readerBody.scrollHeight - readerBody.clientHeight;
+                const progress = (scrollTop / scrollHeight) * 100;
+                progressFill.style.width = `${Math.min(progress, 100)}%`;
+            });
+        }
+
+        // Close Reader
+        function closeReader() {
+            document.getElementById('readerMode').classList.remove('active');
+            currentReaderModule = null;
         }
 
         // Download Markdown
