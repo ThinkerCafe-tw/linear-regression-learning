@@ -1037,6 +1037,9 @@
                 // Add IDs to headings for TOC navigation
                 addHeadingIds(readerContent);
 
+                // Intercept internal markdown links
+                interceptMarkdownLinks(readerContent);
+
                 // Scroll to top
                 readerBody.scrollTop = 0;
 
@@ -1083,6 +1086,34 @@
 
                 li.appendChild(a);
                 tocList.appendChild(li);
+            });
+        }
+
+        // Intercept markdown links to open in reader
+        function interceptMarkdownLinks(content) {
+            const links = content.querySelectorAll('a[href$=".md"]');
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const href = link.getAttribute('href');
+
+                    // Extract filename (remove ./)
+                    const filename = href.startsWith('./') ? href.slice(2) : href;
+
+                    // Find corresponding module
+                    const module = modules.find(m => m.file === filename);
+
+                    if (module) {
+                        // Open in reader
+                        viewMaterial(module.file, module.title);
+                    } else if (filename === 'README.md') {
+                        // Close reader and return to home
+                        closeReader();
+                    } else {
+                        // Fallback: try to load directly
+                        viewMaterial(filename, filename.replace('.md', ''));
+                    }
+                });
             });
         }
 
