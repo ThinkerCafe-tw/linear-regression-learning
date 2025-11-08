@@ -226,11 +226,11 @@ legend("topright",
 
 ```r
 # 學生常常不小心用中文輸入法打程式碼
-> model <- lm(mpg ~ wt,data = mtcars)  # 逗號是全形！
-Error: unexpected input in "model <- lm(mpg ~ wt,"
+> model <- lm(mpg ~ wt，data = mtcars)  # 逗號是全形！
+Error: unexpected input in "model <- lm(mpg ~ wt，"
 ```
 
-**問題**：肉眼很難看出來（`,` 和 `,` 長很像），但 R 會報錯
+**問題**：全形逗號 `，` 和半形逗號 `,` 很難分辨，但 R 只接受半形
 
 **解決**：
 1. **寫程式碼時務必切換到英文輸入法**
