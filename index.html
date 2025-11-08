@@ -17,7 +17,7 @@
             --text-color: #333333;
             --border-color: #dee2e6;
             --code-bg: #f4f4f4;
-            --sidebar-width: 300px;
+            --sidebar-width: 380px;
         }
 
         [data-theme="dark"] {
@@ -135,9 +135,9 @@
         }
 
         .learning-path-selector {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             background: var(--bg-color);
-            padding: 15px;
+            padding: 18px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
         }
@@ -162,9 +162,9 @@
         }
 
         .progress-container {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             background: var(--bg-color);
-            padding: 15px;
+            padding: 18px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
         }
@@ -383,150 +383,11 @@
         }
 
         /* Module Content */
-        .module-content {
-            max-width: 900px;
-            margin: 0 auto;
-            display: none;
-        }
-
-        .module-content.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
+        /* Module content styles removed - using reader mode directly */
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        .module-header {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        .module-title-main {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-
-        .module-meta {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            font-size: 0.9rem;
-            color: #7f8c8d;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .meta-item svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        .objectives {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .objectives h3 {
-            margin-bottom: 15px;
-            color: var(--primary-color);
-            font-size: 1.3rem;
-        }
-
-        .objectives ul {
-            list-style-position: inside;
-            padding-left: 10px;
-        }
-
-        .objectives li {
-            margin-bottom: 8px;
-            padding-left: 10px;
-        }
-
-        .content-section {
-            margin-bottom: 40px;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            color: var(--secondary-color);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary-color);
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s;
-        }
-
-        .card:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            cursor: pointer;
-        }
-
-        .card-title {
-            font-size: 1.3rem;
-            color: var(--secondary-color);
-            font-weight: 600;
-        }
-
-        .card-toggle {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            transition: transform 0.3s;
-        }
-
-        .card-toggle.expanded {
-            transform: rotate(180deg);
-        }
-
-        .card-body {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out;
-        }
-
-        .card-body.expanded {
-            max-height: 5000px;
-            transition: max-height 1s ease-in;
-        }
-
-        .code-block {
-            background: var(--code-bg);
-            padding: 15px;
-            border-radius: 5px;
-            margin: 15px 0;
-            overflow-x: auto;
-            border-left: 3px solid var(--primary-color);
-        }
-
-        .code-block pre {
-            margin: 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
         }
 
         .tip-box {
@@ -551,14 +412,6 @@
             display: block;
             margin-bottom: 5px;
             font-size: 1.05rem;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid var(--border-color);
         }
 
         .btn-primary {
@@ -1132,14 +985,7 @@
             </div>
         </div>
 
-        <!-- Module Content (will be dynamically loaded) -->
-        <div id="moduleContainer"></div>
-
-        <!-- Loading -->
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>載入中...</p>
-        </div>
+        <!-- Module content removed - using reader mode directly -->
     </div>
 
     <!-- Reader Mode -->
@@ -1147,6 +993,9 @@
         <div class="reader-header">
             <h2 id="readerTitle">教材標題</h2>
             <div class="reader-controls">
+                <button class="btn-primary" id="markCompletedBtn" onclick="markCurrentModuleCompleted()" style="margin-right: 10px;">
+                    ✓ 標記為已完成
+                </button>
                 <button class="reader-close" onclick="closeReader()">✕ 關閉閱讀器</button>
             </div>
         </div>
@@ -1283,7 +1132,7 @@
                 .filter((_, idx) => pathModules.includes(idx))
                 .map((module, idx) => `
                     <li class="module-item ${completedModules.includes(module.id) ? 'completed' : ''}"
-                        onclick="loadModule('${module.id}')">
+                        onclick="openModuleReader('${module.id}')">
                         <div class="module-title-text">${idx + 1}. ${module.title}</div>
                         <div class="module-meta-info">
                             <span class="module-level level-${module.level}">${module.level}</span>
@@ -1305,103 +1154,23 @@
             document.getElementById('pathSelector').value = path;
             renderModuleList();
             const moduleId = modules[learningPaths[path][moduleIndex]].id;
-            loadModule(moduleId);
+            openModuleReader(moduleId);
         }
 
         // Load Module
-        function loadModule(moduleId) {
+        // Open Module Reader directly (removed intermediate card page)
+        function openModuleReader(moduleId) {
             const module = modules.find(m => m.id === moduleId);
             if (!module) return;
 
-            // Update UI
-            document.getElementById('welcomeScreen').style.display = 'none';
-            const moduleContainer = document.getElementById('moduleContainer');
-
-            // Update active state
+            // Update active state in sidebar
             document.querySelectorAll('.module-item').forEach(item => {
                 item.classList.remove('active');
             });
             event.target.closest('.module-item')?.classList.add('active');
 
-            // Show module content
-            moduleContainer.innerHTML = `
-                <div class="module-content active">
-                    <div class="module-header">
-                        <h1 class="module-title-main">${module.title}</h1>
-                        <div class="module-meta">
-                            <div class="meta-item">
-                                <span>📊</span>
-                                <span>難度：${module.level}</span>
-                            </div>
-                            <div class="meta-item">
-                                <span>⏱</span>
-                                <span>時長：${module.duration}</span>
-                            </div>
-                            <div class="meta-item">
-                                <span>⭐</span>
-                                <span>${'★'.repeat(module.difficulty)}${'☆'.repeat(5-module.difficulty)}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="objectives">
-                        <h3>📌 學習目標</h3>
-                        <ul>
-                            ${module.objectives.map(obj => `<li>${obj}</li>`).join('')}
-                        </ul>
-                    </div>
-
-                    <div class="tip-box">
-                        <strong>💡 教材說明</strong>
-                        <p>${module.description}</p>
-                    </div>
-
-                    <div class="content-section">
-                        <h2 class="section-title">教材內容</h2>
-                        <div class="card">
-                            <div class="card-body expanded">
-                                <p>📄 完整教材請參考：<strong>${module.file}</strong></p>
-                                <p>建議使用 RStudio 或 Markdown 閱讀器開啟，可直接複製程式碼執行。</p>
-                                <br>
-                                <div class="tip-box warning">
-                                    <strong>⚠️ 使用建議</strong>
-                                    <p><strong>方法 1：在 RStudio 中開啟</strong></p>
-                                    <ol>
-                                        <li>開啟 RStudio</li>
-                                        <li>檔案 → 開啟檔案 → 選擇 <code>${module.file}</code></li>
-                                        <li>預覽視窗會顯示格式化文件</li>
-                                        <li>可直接複製程式碼執行</li>
-                                    </ol>
-                                    <br>
-                                    <p><strong>方法 2：使用 Markdown 閱讀器</strong></p>
-                                    <ul>
-                                        <li>Typora（推薦，支援數學公式）</li>
-                                        <li>VS Code + Markdown Preview Enhanced</li>
-                                        <li>任何支援 GitHub Flavored Markdown 的工具</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="action-buttons">
-                        <button class="btn-primary" onclick="markAsCompleted('${module.id}')">
-                            ✓ 標記為已完成
-                        </button>
-                        <div class="button-group">
-                            <button class="btn-primary" onclick="viewMaterial('${module.file}', '${module.title}')">
-                                📖 在網頁中閱讀
-                            </button>
-                            <button class="btn-secondary" onclick="downloadMarkdown('${module.file}')">
-                                ⬇ 下載到本地
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Scroll to top
-            window.scrollTo(0, 0);
+            // Open reader directly
+            viewMaterial(module.file, module.title);
             currentModule = moduleId;
         }
 
@@ -1423,7 +1192,7 @@
 
                 if (nextPathIdx < pathModules.length) {
                     const nextModule = modules[pathModules[nextPathIdx]];
-                    setTimeout(() => loadModule(nextModule.id), 1000);
+                    setTimeout(() => openModuleReader(nextModule.id), 1000);
                 }
             }
         }
@@ -1685,6 +1454,20 @@
         function closeReader() {
             document.getElementById('readerMode').classList.remove('active');
             currentReaderModule = null;
+        }
+
+        // Mark current module as completed (called from reader)
+        function markCurrentModuleCompleted() {
+            if (currentModule) {
+                markAsCompleted(currentModule);
+                // Update button state
+                const btn = document.getElementById('markCompletedBtn');
+                if (completedModules.includes(currentModule)) {
+                    btn.textContent = '✓ 已完成';
+                    btn.style.opacity = '0.6';
+                    btn.disabled = true;
+                }
+            }
         }
 
         // Download Markdown
