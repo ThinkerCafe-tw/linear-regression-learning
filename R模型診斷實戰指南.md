@@ -715,13 +715,14 @@ par(mfrow = c(2, 2))
 plot(model)
 
 shapiro.test(residuals(model))
-# W = 0.95246, p-value = 0.6986 → ✓ 常態性
+# W = 0.9191, p-value = 0.1866 → ✓ 常態性
 
 library(lmtest)
 bptest(model)
-# BP = 0.0062, p-value = 0.9373 → ✓ 同質變異數
+# BP = 1.0088, p-value = 0.3152 → ✓ 同質變異數
 
 # 結論：模型通過所有診斷 ✓
+# R² = 0.991（解釋力極高，身高與體重線性關係強）
 ```
 
 </details>
@@ -744,20 +745,26 @@ model_bad <- lm(dist ~ speed, data = cars)
 <summary>點擊查看解答</summary>
 
 ```r
-# 診斷
+# 診斷原始模型
 par(mfrow = c(2, 2))
 plot(model_bad)
-bptest(model_bad)  # p = 0.0269 → 異質變異數 ❌
 
-# 嘗試平方根轉換
-model_good <- lm(sqrt(dist) ~ speed, data = cars)
-par(mfrow = c(2, 2))
-plot(model_good)
-bptest(model_good)  # p = 0.2346 → 改善 ✓
+library(lmtest)
+bptest(model_bad)  # p = 0.073 → 邊緣通過，但常態性有問題
+shapiro.test(residuals(model_bad))  # p = 0.022 → 常態性 ❌
 
-# 或嘗試對數轉換
+# 方案 1：平方根轉換（推薦）
+model_sqrt <- lm(sqrt(dist) ~ speed, data = cars)
+bptest(model_sqrt)  # p = 0.916 → 異質變異數大幅改善 ✓
+shapiro.test(residuals(model_sqrt))  # p = 0.314 → 常態性改善 ✓
+# R² = 0.709（比原始 0.651 更好）
+
+# 方案 2：對數轉換（不推薦）
 model_log <- lm(log(dist) ~ speed, data = cars)
-bptest(model_log)  # p = 0.6999 → 更好 ✓
+bptest(model_log)  # p = 0.004 → 異質變異數變嚴重 ❌
+shapiro.test(residuals(model_log))  # p = 0.069 → 勉強通過
+
+# 結論：平方根轉換是最佳解決方案
 ```
 
 </details>
