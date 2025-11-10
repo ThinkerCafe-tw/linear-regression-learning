@@ -137,6 +137,8 @@ shapiro.test(mtcars$mpg)
 # W = 0.9476, p-value = 0.1229 → 符合常態分配 ✓
 ```
 
+![油耗分配分析](./img/case_mpg_distribution.png)
+
 ---
 
 #### 4.2 相關矩陣（連續變數）
@@ -154,6 +156,8 @@ library(corrplot)
 corrplot(cor_matrix, method = "color", type = "upper",
          addCoef.col = "black", tl.col = "black", tl.srt = 45)
 ```
+
+![相關矩陣分析](./img/case_correlation_matrix.png)
 
 **重要發現**：
 ```
@@ -179,6 +183,8 @@ pairs(~ mpg + wt + hp + disp, data = mtcars,
       main = "變數關係散佈圖矩陣",
       pch = 19, col = "blue")
 ```
+
+![變數關係散佈圖矩陣](./img/case_scatterplot_matrix.png)
 
 ---
 
@@ -211,6 +217,8 @@ boxplot(mpg ~ gear, data = mtcars,
         xlab = "檔數", ylab = "mpg",
         col = c("yellow", "lightblue", "lightgreen"))
 ```
+
+![類別變數分析](./img/case_categorical_boxplots.png)
 
 **觀察**：
 - 4 缸車比 8 缸車省油（顯著）
@@ -421,20 +429,24 @@ summary(model_final)
 # 四張診斷圖
 par(mfrow = c(2, 2))
 plot(model_final)
+```
 
+![最佳模型診斷圖](./img/case_final_model_diagnostics.png)
+
+```r
 # 常態性檢定
 shapiro.test(residuals(model_final))
-# W = 0.9744, p-value = 0.618 → 符合常態性 ✓
+# W = 0.9411, p-value = 0.08 → 符合常態性 ✓
 
 # 異質變異數檢定
 library(lmtest)
 bptest(model_final)
-# BP = 2.9165, p-value = 0.4048 → 同質變異數 ✓
+# BP = 6.187, p-value = 0.103 → 同質變異數 ✓
 
 # 高影響點檢查
 cooks_d <- cooks.distance(model_final)
 max(cooks_d)
-# [1] 0.4665 < 0.5 → 無高影響點 ✓
+# [1] 0.348 < 0.5 → 無高影響點 ✓
 
 # VIF 檢查
 vif(model_final)
@@ -447,8 +459,8 @@ vif(model_final)
 **診斷結果**：
 | 檢查項目       | 結果       | 判斷           |
 |----------------|------------|----------------|
-| 常態性         | p = 0.618  | ✓ 符合         |
-| 同質變異數     | p = 0.405  | ✓ 符合         |
+| 常態性         | p = 0.080  | ✓ 符合         |
+| 同質變異數     | p = 0.103  | ✓ 符合         |
 | 高影響點       | D < 0.5    | ✓ 無問題       |
 | 共線性         | VIF < 5    | ✓ 無問題       |
 
