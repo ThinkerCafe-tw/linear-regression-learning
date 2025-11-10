@@ -218,7 +218,9 @@ boxplot(mpg ~ gear, data = mtcars,
         col = c("yellow", "lightblue", "lightgreen"))
 ```
 
-![類別變數分析](./img/case_categorical_boxplots_fixed.png)
+![類別變數分析 - 第1部分](./img/case_categorical_part1.png)
+
+![類別變數分析 - 第2部分](./img/case_categorical_part2.png)
 
 **觀察**：
 - 4 缸車比 8 缸車省油（顯著）
