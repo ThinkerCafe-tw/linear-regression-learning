@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# 生成有問題的 Q-Q 圖範例
+# 生成更典型、更清楚的 Q-Q 圖範例
 # 用於展示常見的非常態分布模式
 
 import matplotlib.pyplot as plt
@@ -14,8 +14,8 @@ plt.rcParams['axes.unicode_minus'] = False
 import os
 os.makedirs('img', exist_ok=True)
 
-np.random.seed(42)
-n = 50
+np.random.seed(123)  # 更換隨機種子以獲得更好的範例
+n = 100  # 增加樣本數讓分配特性更明顯
 
 def create_qq_plot(data, title, filename, description):
     """創建 Q-Q 圖"""
@@ -47,47 +47,70 @@ def create_qq_plot(data, title, filename, description):
     plt.savefig(filename, dpi=150, bbox_inches='tight')
     plt.close()
 
-# 1. 右偏分配（右尾上翹）
-right_skewed = np.random.exponential(2, n) - 2  # 指數分布
-right_skewed = (right_skewed - np.mean(right_skewed)) / np.std(right_skewed)
+# 1. 右偏分配（右尾上翹）- 使用對數常態分配
+np.random.seed(100)
+log_normal_data = np.random.lognormal(mean=0.5, sigma=0.8, size=n)
+# 輕度標準化，保持偏度特性
+right_skewed = (log_normal_data - np.mean(log_normal_data)) / np.std(log_normal_data) * 0.8
 create_qq_plot(right_skewed, '右偏分配：右尾上翹', 'img/qq_right_skewed.png',
                '❌ 右尾偏離虛線向上\n表示有極端大值')
 
-# 2. 左偏分配（左尾下彎）
-left_skewed = -np.random.exponential(2, n) + 2  # 負指數分布
-left_skewed = (left_skewed - np.mean(left_skewed)) / np.std(left_skewed)
+# 2. 左偏分配（左尾下彎）- 使用 Beta 分配
+np.random.seed(150)
+beta_data = np.random.beta(a=8, b=2, size=n)  # 左偏的 beta 分配
+left_skewed = (beta_data - np.mean(beta_data)) / np.std(beta_data) * 0.8
 create_qq_plot(left_skewed, '左偏分配：左尾下彎', 'img/qq_left_skewed.png',
                '❌ 左尾偏離虛線向下\n表示有極端小值')
 
-# 3. 厚尾分配（兩端偏離）
-heavy_tail = np.random.laplace(0, 1, n)  # 拉普拉斯分布（厚尾）
+# 3. 厚尾分配（兩端偏離）- 使用 t 分配 + 人工極端值
+np.random.seed(200)
+t_data = np.random.standard_t(df=2, size=n-4)  # 自由度小的 t 分配
+# 人工添加極端值確保厚尾效果明顯
+extreme_values = [-3.5, -3.0, 3.0, 3.5]
+heavy_tail = np.concatenate([t_data, extreme_values])
 heavy_tail = (heavy_tail - np.mean(heavy_tail)) / np.std(heavy_tail)
 create_qq_plot(heavy_tail, '厚尾分配：兩端偏離', 'img/qq_heavy_tail.png',
                '❌ 兩端都偏離虛線\n表示有較多極端值')
 
-# 4. 薄尾分配（S型彎曲）
-thin_tail = np.random.uniform(-2, 2, n)  # 均勻分布（薄尾）
-thin_tail = (thin_tail - np.mean(thin_tail)) / np.std(thin_tail)
+# 4. 薄尾分配（S型彎曲）- 使用截斷常態分配
+np.random.seed(250)
+# 生成截斷在 [-1.5, 1.5] 的常態分配
+from scipy.stats import truncnorm
+a, b = -1.5, 1.5
+thin_tail_dist = truncnorm(a, b, loc=0, scale=0.8)
+thin_tail = thin_tail_dist.rvs(size=n)
 create_qq_plot(thin_tail, '薄尾分配：S型彎曲', 'img/qq_thin_tail.png',
                '❌ S型彎曲模式\n表示缺乏極端值')
 
 # 5. 理想常態分配（對照組）
+np.random.seed(300)
 normal_data = np.random.normal(0, 1, n)
 create_qq_plot(normal_data, '理想常態分配', 'img/qq_normal_ideal.png',
                '✅ 點接近虛線\n符合常態分布')
 
-# 6. 創建組合圖
-fig, axes = plt.subplots(2, 3, figsize=(15, 10))
-fig.suptitle('Q-Q 圖：不同分配類型的比較', fontsize=16, fontweight='bold')
+# 6. 雙峰分配（非常態的另一種類型）
+np.random.seed(350)
+# 混合兩個常態分配
+mixture1 = np.random.normal(-1.5, 0.5, n//2)
+mixture2 = np.random.normal(1.5, 0.5, n//2)
+bimodal = np.concatenate([mixture1, mixture2])
+np.random.shuffle(bimodal)  # 打亂順序
+bimodal = (bimodal - np.mean(bimodal)) / np.std(bimodal)
+create_qq_plot(bimodal, '雙峰分配：波浪狀', 'img/qq_bimodal.png',
+               '❌ 波浪狀或階梯狀\n表示資料有分群現象')
 
-# 數據和標題
+# 7. 創建改進的組合圖
+fig, axes = plt.subplots(2, 3, figsize=(16, 11))
+fig.suptitle('Q-Q 圖診斷指南：常見分配模式識別', fontsize=18, fontweight='bold', y=0.98)
+
+# 數據和標題（使用新的更典型的範例）
 datasets = [
-    (normal_data, '✅ 理想常態', '✅ 點沿虛線分布'),
-    (right_skewed, '❌ 右偏：右尾上翹', '右端點向上偏離'),
-    (left_skewed, '❌ 左偏：左尾下彎', '左端點向下偏離'),
-    (heavy_tail, '❌ 厚尾：兩端偏離', '兩端都有偏離'),
-    (thin_tail, '❌ 薄尾：S型彎曲', 'S型彎曲模式'),
-    (np.random.normal(0, 1, n), '✅ 另一個常態例子', '再次驗證常態')
+    (normal_data, '✅ 理想常態分配', '點沿虛線分布'),
+    (right_skewed, '❌ 右偏：右尾上翹', '右端向上偏離'),
+    (left_skewed, '❌ 左偏：左尾下彎', '左端向下偏離'),
+    (heavy_tail, '❌ 厚尾：兩端偏離', '兩端都偏離虛線'),
+    (thin_tail, '❌ 薄尾：S型彎曲', '缺乏極端值'),
+    (bimodal, '❌ 雙峰：波浪狀', '階梯或波浪狀')
 ]
 
 for i, (data, title, desc) in enumerate(datasets):
@@ -120,11 +143,18 @@ plt.tight_layout()
 plt.savefig('img/qq_comparison_all.png', dpi=150, bbox_inches='tight')
 plt.close()
 
-print("Q-Q 圖問題範例已生成完成！")
-print("檔案位置：")
-print("- img/qq_normal_ideal.png - 理想常態分配")
-print("- img/qq_right_skewed.png - 右偏分配（右尾上翹）")
-print("- img/qq_left_skewed.png - 左偏分配（左尾下彎）")
-print("- img/qq_heavy_tail.png - 厚尾分配（兩端偏離）")
-print("- img/qq_thin_tail.png - 薄尾分配（S型彎曲）")
-print("- img/qq_comparison_all.png - 所有類型比較圖")
+print("✅ 重新生成的 Q-Q 圖診斷範例已完成！")
+print("\n📊 改進重點：")
+print("- 增加樣本數至 100，讓分配特性更明顯")
+print("- 使用不同隨機種子，確保典型模式")
+print("- 避免過度標準化掩蓋分配特性")
+print("- 人工添加極端值確保厚尾效果")
+print("\n📁 檔案位置：")
+print("- img/qq_normal_ideal.png - 理想常態分配（對照組）")
+print("- img/qq_right_skewed.png - 右偏分配（對數常態，右尾上翹）")
+print("- img/qq_left_skewed.png - 左偏分配（Beta 分配，左尾下彎）")
+print("- img/qq_heavy_tail.png - 厚尾分配（t 分配 + 極端值，兩端偏離）")
+print("- img/qq_thin_tail.png - 薄尾分配（截斷常態，S型彎曲）")
+print("- img/qq_bimodal.png - 雙峰分配（混合分配，波浪狀）")
+print("- img/qq_comparison_all.png - 六種類型完整比較圖")
+print("\n🎯 現在每張圖都準確展示其聲稱的問題模式！")

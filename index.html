@@ -214,6 +214,267 @@
             opacity: 0.9;
         }
 
+        /* Module Catalog */
+        .module-catalog {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .module-catalog h2 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .module-catalog p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .catalog-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+            text-align: left;
+        }
+
+        .catalog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(52,152,219,0.15);
+            border-color: var(--primary-color);
+        }
+
+        .catalog-card.completed {
+            border-color: var(--success-color);
+        }
+
+        .catalog-card.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 25px;
+            height: 25px;
+            background: var(--success-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .catalog-card {
+            position: relative;
+        }
+
+        .catalog-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .catalog-number {
+            background: var(--primary-color);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .catalog-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .catalog-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .catalog-level {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .catalog-description {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Level colors for catalog */
+        .level-入門 { background: var(--success-color); color: white; }
+        .level-中級 { background: var(--warning-color); color: white; }
+        .level-中高級 { background: var(--accent-color); color: white; }
+        .level-高級 { background: #8e44ad; color: white; }
+
+        /* Learning Progress Section */
+        .learning-progress-section {
+            margin: 50px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .learning-progress-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .learning-progress-section p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .progress-indicator {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+
+        .progress-track {
+            position: relative;
+            height: 50px;
+            background: #e9ecef;
+            border-radius: 25px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 2px solid var(--border-color);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), #2980b9);
+            width: 0%;
+            transition: width 0.6s ease;
+            border-radius: inherit;
+        }
+
+        .progress-segments {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+        }
+
+        .progress-segment {
+            flex: 1;
+            height: 100%;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+            border-right: 2px solid rgba(255,255,255,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .progress-segment:last-child {
+            border-right: none;
+        }
+
+        .progress-segment:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.02);
+            z-index: 1;
+        }
+
+        .progress-segment.completed {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .progress-segment.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .progress-info span {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        /* Progress segment tooltips */
+        .progress-segment {
+            position: relative;
+        }
+
+        .progress-segment:hover::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 10;
+            margin-bottom: 5px;
+        }
+
+        .progress-segment:hover::after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: rgba(0,0,0,0.8);
+        }
+
         /* Module Content */
         /* Module content styles removed - using reader mode directly */
 
@@ -621,6 +882,81 @@
             font-weight: 600;
         }
 
+        /* Breadcrumb Navigation */
+        .breadcrumb {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 30px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .breadcrumb-link:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+        .breadcrumb-separator {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .breadcrumb-current {
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        /* Chapter Quick Switch */
+        .chapter-quick-switch {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chapter-select {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chapter-select:hover {
+            border-color: var(--primary-color);
+        }
+
+        .chapter-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .chapter-switch-label {
+            font-size: 0.85rem;
+            color: #666;
+            white-space: nowrap;
+        }
+
         /* Copy Button */
         .copy-button {
             position: absolute;
@@ -707,6 +1043,44 @@
             .chapter-nav {
                 flex-direction: column;
             }
+
+            /* Mobile breadcrumb adjustments */
+            .breadcrumb {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 10px 20px;
+            }
+
+            .chapter-quick-switch {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .chapter-select {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .chapter-switch-label {
+                display: none;
+            }
+
+            /* Mobile progress adjustments */
+            .progress-segment {
+                font-size: 0.8rem;
+            }
+
+            .progress-segment:hover::before {
+                font-size: 0.7rem;
+                padding: 6px 8px;
+            }
+
+            .progress-info {
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+            }
         }
     </style>
 
@@ -774,6 +1148,32 @@
                     <p>從問題定義到報告撰寫的完整研究流程</p>
                 </div>
             </div>
+
+            <!-- Learning Progress Indicator -->
+            <div class="learning-progress-section">
+                <h2>📈 學習進度</h2>
+                <p>點擊進度條快速前往相應章節：</p>
+                <div class="progress-indicator">
+                    <div class="progress-track">
+                        <div class="progress-fill" id="mainProgressFill"></div>
+                        <div class="progress-segments" id="progressSegments">
+                            <!-- Progress segments will be generated here -->
+                        </div>
+                    </div>
+                    <div class="progress-info">
+                        <span id="progressText">0 / 4 完成 (0%)</span>
+                        <button class="btn-secondary" onclick="resetProgress()">重置進度</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-catalog">
+                <h2>📚 完整教材目錄</h2>
+                <p>點擊任一教材直接開始學習：</p>
+                <div class="catalog-grid" id="catalogGrid">
+                    <!-- Module cards will be generated here -->
+                </div>
+            </div>
         </div>
 
         <!-- Module content removed - using reader mode directly -->
@@ -788,6 +1188,20 @@
                     ✓ 標記為已完成
                 </button>
                 <button class="reader-close" onclick="closeReader()">✕ 關閉閱讀器</button>
+            </div>
+        </div>
+        <!-- Breadcrumb Navigation -->
+        <div class="breadcrumb" id="breadcrumbNav">
+            <div class="breadcrumb-item">
+                <span class="breadcrumb-link" onclick="closeReader()">🏠 首頁</span>
+                <span class="breadcrumb-separator">›</span>
+                <span class="breadcrumb-current" id="breadcrumbCurrent">載入中...</span>
+            </div>
+            <div class="chapter-quick-switch">
+                <span class="chapter-switch-label">快速切換：</span>
+                <select class="chapter-select" id="chapterSelect" onchange="quickSwitchChapter()">
+                    <option value="">請選擇章節...</option>
+                </select>
             </div>
         </div>
         <div class="reader-container">
@@ -911,7 +1325,35 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             updateProgress();
+            renderCatalog();
+            renderProgressSegments();
         });
+
+        // Render Module Catalog
+        function renderCatalog() {
+            const catalogGrid = document.getElementById('catalogGrid');
+
+            catalogGrid.innerHTML = modules.map((module, index) => {
+                const isCompleted = completedModules.includes(module.id);
+                const levelClass = `level-${module.level}`;
+
+                return `
+                    <div class="catalog-card ${isCompleted ? 'completed' : ''}"
+                         onclick="startLearning(${index})"
+                         data-module-id="${module.id}">
+                        <div class="catalog-header">
+                            <div class="catalog-number">${index + 1}</div>
+                            <h3 class="catalog-title">${module.title}</h3>
+                        </div>
+                        <div class="catalog-meta">
+                            <span class="catalog-level ${levelClass}">${module.level}</span>
+                            <span>⏱ ${module.duration}</span>
+                        </div>
+                        <div class="catalog-description">${module.description}</div>
+                    </div>
+                `;
+            }).join('');
+        }
 
         // Start learning from a specific module
         function startLearning(moduleIndex) {
@@ -929,6 +1371,7 @@
                 completedModules.push(moduleId);
                 localStorage.setItem('completedModules', JSON.stringify(completedModules));
                 updateProgress();
+                renderCatalog(); // Update catalog display
 
                 // Show success message
                 alert('✓ 已標記為完成！繼續下一個教材吧！');
@@ -951,9 +1394,39 @@
             const total = modules.length;
             const percentage = Math.round((completed / total) * 100);
 
-            document.getElementById('progressFill').style.width = percentage + '%';
-            document.getElementById('progressText').textContent =
-                `${completed} / ${total} 完成 (${percentage}%)`;
+            // Update main progress fill
+            const mainProgressFill = document.getElementById('mainProgressFill');
+            if (mainProgressFill) {
+                mainProgressFill.style.width = percentage + '%';
+            }
+
+            // Update progress text
+            const progressText = document.getElementById('progressText');
+            if (progressText) {
+                progressText.textContent = `${completed} / ${total} 完成 (${percentage}%)`;
+            }
+
+            // Update progress segments
+            renderProgressSegments();
+        }
+
+        // Render Progress Segments
+        function renderProgressSegments() {
+            const progressSegments = document.getElementById('progressSegments');
+            if (!progressSegments) return;
+
+            progressSegments.innerHTML = modules.map((module, index) => {
+                const isCompleted = completedModules.includes(module.id);
+                const completedClass = isCompleted ? 'completed' : '';
+
+                return `
+                    <div class="progress-segment ${completedClass}"
+                         onclick="startLearning(${index})"
+                         data-tooltip="第${index + 1}章：${module.title}">
+                        ${index + 1}
+                    </div>
+                `;
+            }).join('');
         }
 
         // Reset Progress
@@ -962,6 +1435,7 @@
                 completedModules = [];
                 localStorage.removeItem('completedModules');
                 updateProgress();
+                renderCatalog(); // Update catalog display
                 alert('✓ 進度已重置');
             }
         }
@@ -992,6 +1466,9 @@
             readerMode.classList.add('active');
             readerTitle.textContent = title;
             readerContent.innerHTML = '<div class="loading"><div class="spinner"></div><p>載入教材中...</p></div>';
+
+            // Update breadcrumb
+            updateBreadcrumb(title);
 
             const tocList = document.getElementById('tocList');
             tocList.innerHTML = '';
@@ -1217,6 +1694,56 @@
                 const progress = (scrollTop / scrollHeight) * 100;
                 progressFill.style.width = `${Math.min(progress, 100)}%`;
             });
+        }
+
+        // Update Breadcrumb Navigation and Chapter Selector
+        function updateBreadcrumb(title) {
+            const breadcrumbCurrent = document.getElementById('breadcrumbCurrent');
+            if (breadcrumbCurrent) {
+                breadcrumbCurrent.textContent = title;
+            }
+
+            // Update chapter selector
+            updateChapterSelector();
+        }
+
+        // Update Chapter Selector
+        function updateChapterSelector() {
+            const chapterSelect = document.getElementById('chapterSelect');
+            if (!chapterSelect) return;
+
+            // Clear existing options
+            chapterSelect.innerHTML = '<option value="">請選擇章節...</option>';
+
+            // Add all modules as options
+            modules.forEach((module, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `第${index + 1}章：${module.title}`;
+
+                // Mark current module as selected
+                if (currentReaderModule && currentReaderModule.id === module.id) {
+                    option.selected = true;
+                }
+
+                // Add completion indicator
+                if (completedModules.includes(module.id)) {
+                    option.textContent = `✓ ${option.textContent}`;
+                }
+
+                chapterSelect.appendChild(option);
+            });
+        }
+
+        // Handle Quick Chapter Switch
+        function quickSwitchChapter() {
+            const chapterSelect = document.getElementById('chapterSelect');
+            const selectedIndex = parseInt(chapterSelect.value);
+
+            if (!isNaN(selectedIndex) && selectedIndex >= 0 && selectedIndex < modules.length) {
+                const targetModule = modules[selectedIndex];
+                viewMaterial(targetModule.file, targetModule.title);
+            }
         }
 
         // Close Reader
