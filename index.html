@@ -1006,6 +1006,175 @@
             flex: 1;
         }
 
+        /* New Hero Section Styles */
+        .hero-section {
+            text-align: center;
+            padding: 60px 0;
+            background: linear-gradient(135deg, var(--bg-color), var(--card-bg));
+            border-radius: 16px;
+            margin-bottom: 40px;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            opacity: 0.7;
+            margin-bottom: 40px;
+            line-height: 1.4;
+        }
+
+        .primary-cta {
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            background: linear-gradient(135deg, var(--primary-color), #2980b9);
+            color: white;
+            padding: 20px 32px;
+            border-radius: 12px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(52, 152, 219, 0.4);
+        }
+
+        .cta-icon {
+            font-size: 1.5rem;
+        }
+
+        .cta-content {
+            text-align: left;
+        }
+
+        .cta-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .cta-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Learning Paths */
+        .learning-paths {
+            margin-bottom: 40px;
+        }
+
+        .learning-paths h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--text-color);
+        }
+
+        .path-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .path-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .path-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .path-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .path-card h3 {
+            margin-bottom: 12px;
+            color: var(--text-color);
+        }
+
+        .path-card p {
+            color: var(--text-color);
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .path-time {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        /* Progress Section */
+        .progress-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-section h3 {
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        /* All Modules Section */
+        .all-modules {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .modules-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modules-header h3 {
+            margin: 0;
+            color: var(--text-color);
+        }
+
         /* Responsive Design for Reader */
         @media (max-width: 1024px) {
             .reader-toc {
@@ -1110,49 +1279,43 @@
     <div class="main-content" id="mainContent">
         <!-- Welcome Screen -->
         <div class="welcome-screen" id="welcomeScreen">
-            <div class="welcome-header">
-                <h1>歡迎來到 R 語言實作學習系統</h1>
-                <p>從零開始，完整掌握線性迴歸的 R 語言實作</p>
+            <!-- Hero Section - 清楚的價值主張 -->
+            <div class="hero-section">
+                <h1>線性迴歸 R 語言實作學習</h1>
+                <p class="hero-subtitle">一些基本的學習筆記，希望能幫助初學者入門</p>
+
+                <!-- Primary CTA - 最重要的行動按鈕 -->
+                <div class="primary-cta">
+                    <button class="cta-button" onclick="startLearning(0)">
+                        <span class="cta-icon">🚀</span>
+                        <div class="cta-content">
+                            <div class="cta-title">開始學習</div>
+                            <div class="cta-subtitle">R 快速上手 (10分鐘)</div>
+                        </div>
+                    </button>
+                </div>
             </div>
 
-            <div class="quick-start">
-                <h2>🚀 快速開始</h2>
-                <p>從左側選擇教材開始學習，或點擊下方按鈕直接開始：</p>
-                <div class="path-buttons">
-                    <div class="path-btn" onclick="startLearning(0)">
-                        <strong>📖 從第一章開始</strong>
-                        <small>R 快速上手指南 | 10分鐘</small>
+            <!-- Quick Navigation - 簡化的路徑選擇 -->
+            <div class="learning-paths">
+                <h2>選擇你的學習方式</h2>
+                <div class="path-cards">
+                    <div class="path-card" onclick="startLearning(0)">
+                        <div class="path-number">1</div>
+                        <h3>快速入門</h3>
+                        <p>R 快速上手指南<br><span class="path-time">⏱ 10分鐘</span></p>
+                    </div>
+                    <div class="path-card" onclick="viewAllModules()">
+                        <div class="path-number">📚</div>
+                        <h3>完整學習</h3>
+                        <p>瀏覽所有教材<br><span class="path-time">⏱ 2-3小時</span></p>
                     </div>
                 </div>
             </div>
 
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>零基礎友善</h3>
-                    <p>從 R 安裝開始，手把手教學，包含常見錯誤處理</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔗</div>
-                    <h3>理論實作對照</h3>
-                    <p>每個公式都有對應 R 程式碼，手算 vs R 結果驗證</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
-                    <h3>完整診斷流程</h3>
-                    <p>四張診斷圖詳解，問題識別與處理策略</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>實戰案例分析</h3>
-                    <p>從問題定義到報告撰寫的完整研究流程</p>
-                </div>
-            </div>
-
-            <!-- Learning Progress Indicator -->
-            <div class="learning-progress-section">
-                <h2>📈 學習進度</h2>
-                <p>點擊進度條快速前往相應章節：</p>
+            <!-- Progress Section - 只在有進度時顯示 -->
+            <div class="progress-section" id="progressSection" style="display: none;">
+                <h3>📈 學習進度</h3>
                 <div class="progress-indicator">
                     <div class="progress-track">
                         <div class="progress-fill" id="mainProgressFill"></div>
@@ -1167,9 +1330,12 @@
                 </div>
             </div>
 
-            <div class="module-catalog">
-                <h2>📚 完整教材目錄</h2>
-                <p>點擊任一教材直接開始學習：</p>
+            <!-- All Modules - 折疊式詳細列表 -->
+            <div class="all-modules" id="allModules" style="display: none;">
+                <div class="modules-header">
+                    <h3>📖 教材目錄</h3>
+                    <button class="btn-secondary" onclick="hideAllModules()">收起</button>
+                </div>
                 <div class="catalog-grid" id="catalogGrid">
                     <!-- Module cards will be generated here -->
                 </div>
@@ -1327,6 +1493,7 @@
             updateProgress();
             renderCatalog();
             renderProgressSegments();
+            checkAndShowProgress();
         });
 
         // Render Module Catalog
@@ -1408,6 +1575,12 @@
 
             // Update progress segments
             renderProgressSegments();
+
+            // Show/hide progress section
+            const progressSection = document.getElementById('progressSection');
+            if (progressSection) {
+                progressSection.style.display = completed > 0 ? 'block' : 'none';
+            }
         }
 
         // Render Progress Segments
@@ -1437,6 +1610,27 @@
                 updateProgress();
                 renderCatalog(); // Update catalog display
                 alert('✓ 進度已重置');
+            }
+        }
+
+        // New UI Functions
+        function viewAllModules() {
+            const allModules = document.getElementById('allModules');
+            allModules.style.display = 'block';
+            allModules.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideAllModules() {
+            const allModules = document.getElementById('allModules');
+            allModules.style.display = 'none';
+        }
+
+        function checkAndShowProgress() {
+            const hasProgress = completedModules.length > 0;
+            const progressSection = document.getElementById('progressSection');
+
+            if (hasProgress) {
+                progressSection.style.display = 'block';
             }
         }
 
