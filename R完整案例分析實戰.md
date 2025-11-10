@@ -137,7 +137,7 @@ shapiro.test(mtcars$mpg)
 # W = 0.9476, p-value = 0.1229 → 符合常態分配 ✓
 ```
 
-![油耗分配分析](./img/case_mpg_distribution.png)
+![油耗分配分析](./img/case_mpg_distribution_fixed.png)
 
 ---
 
@@ -157,7 +157,7 @@ corrplot(cor_matrix, method = "color", type = "upper",
          addCoef.col = "black", tl.col = "black", tl.srt = 45)
 ```
 
-![相關矩陣分析](./img/case_correlation_matrix.png)
+![相關矩陣分析](./img/case_correlation_matrix_fixed.png)
 
 **重要發現**：
 ```
@@ -184,7 +184,7 @@ pairs(~ mpg + wt + hp + disp, data = mtcars,
       pch = 19, col = "blue")
 ```
 
-![變數關係散佈圖矩陣](./img/case_scatterplot_matrix.png)
+![變數關係散佈圖矩陣](./img/case_scatterplot_matrix_fixed.png)
 
 ---
 
@@ -218,7 +218,7 @@ boxplot(mpg ~ gear, data = mtcars,
         col = c("yellow", "lightblue", "lightgreen"))
 ```
 
-![類別變數分析](./img/case_categorical_boxplots.png)
+![類別變數分析](./img/case_categorical_boxplots_fixed.png)
 
 **觀察**：
 - 4 缸車比 8 缸車省油（顯著）
@@ -431,7 +431,7 @@ par(mfrow = c(2, 2))
 plot(model_final)
 ```
 
-![最佳模型診斷圖](./img/case_final_model_diagnostics.png)
+![最佳模型診斷圖](./img/case_final_model_diagnostics_fixed.png)
 
 ```r
 # 常態性檢定
