@@ -344,7 +344,7 @@ bptest(model)
 #### 理想狀況
 
 ![殘差 vs 槓桿值](img/diagnostic_plot_4.png)
-*▲ 殘差 vs 槓桿值：無點超出 Cook's Distance 臨界線*
+*▲ 殘差 vs 槓桿值：有少數點超出 ±2 臨界線，但影響不大*
 
 ---
 
@@ -358,7 +358,7 @@ bptest(model)
 1. **檢查是否為資料錯誤**
 ```r
 # 查看該筆資料
-mtcars[20, ]
+mtcars[30, ]
 ```
 
 2. **評估是否為真實異常**
@@ -370,8 +370,8 @@ mtcars[20, ]
 # 含異常值
 model1 <- lm(mpg ~ wt, data = mtcars)
 
-# 移除第 20 筆
-model2 <- lm(mpg ~ wt, data = mtcars[-20, ])
+# 移除第 30 筆
+model2 <- lm(mpg ~ wt, data = mtcars[-30, ])
 
 # 比較係數
 coef(model1)
@@ -417,12 +417,12 @@ shapiro.test(residuals(model))
 # ===== 步驟 3：同質變異數檢定 =====
 library(lmtest)
 bptest(model)
-# p = 0.1265 > 0.05 → 同質變異數 ✓
+# p = 0.8406 > 0.05 → 同質變異數 ✓
 
 # ===== 步驟 4：檢查高影響點 =====
 cooks_d <- cooks.distance(model)
 which(cooks_d > 0.5)
-# integer(0) → 無高影響點 ✓
+# Chrysler Imperial (第17號) → 有高影響點 ❌
 
 # ===== 步驟 5：VIF（多元迴歸才需要）=====
 # 簡單迴歸跳過，多元迴歸範例：
@@ -438,16 +438,18 @@ vif(model_multi)
 
 | 檢查項目       | 結果 | 判斷           |
 |----------------|------|----------------|
-| Residuals vs Fitted | 點隨機散佈 | ✓ 線性假設成立 |
+| Residuals vs Fitted | 大致隨機，但有異常點 | △ 基本符合線性 |
 | Normal Q-Q     | p = 0.1044 | ✓ 常態性成立   |
-| Scale-Location | p = 0.1265 | ✓ 同質變異數   |
-| Cook's Distance | 最大 = 0.48 | ✓ 無高影響點   |
+| Scale-Location | p = 0.8406 | ✓ 同質變異數   |
+| Cook's Distance | Chrysler Imperial > 0.5 | ❌ 有高影響點   |
 
-**結論**：`mpg ~ wt` 模型通過所有診斷，可信賴 ✓
+**結論**：`mpg ~ wt` 模型大致良好，但需考慮 Chrysler Imperial 的影響
 
 ---
 
 ## 第四部分：問題處理策略
+
+> **📌 重要說明**：以下是**一般性問題**的處理方法。前面的 `mtcars` 範例實際上**沒有**異質變異數問題（p = 0.8406 > 0.05），這裡僅作為**教學示範**，讓你知道遇到這些問題時該怎麼辦。
 
 ### 問題 1：異質變異數
 

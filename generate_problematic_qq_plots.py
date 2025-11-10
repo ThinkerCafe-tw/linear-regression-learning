@@ -47,18 +47,27 @@ def create_qq_plot(data, title, filename, description):
     plt.savefig(filename, dpi=150, bbox_inches='tight')
     plt.close()
 
-# 1. 右偏分配（右尾上翹）- 使用對數常態分配
-np.random.seed(100)
-log_normal_data = np.random.lognormal(mean=0.5, sigma=0.8, size=n)
-# 輕度標準化，保持偏度特性
-right_skewed = (log_normal_data - np.mean(log_normal_data)) / np.std(log_normal_data) * 0.8
+# 1. 右偏分配（右尾上翹）- 手工構造確保正確模式
+np.random.seed(42)
+# 創建大部分接近常態的數據
+normal_base = np.random.normal(0, 0.8, n-5)
+# 手工添加少數大的正值，製造右偏
+right_outliers = np.array([2.5, 3.0, 3.5, 4.0, 4.5])
+# 合併並排序
+right_skewed = np.concatenate([normal_base, right_outliers])
+right_skewed = np.sort(right_skewed)
 create_qq_plot(right_skewed, '右偏分配：右尾上翹', 'img/qq_right_skewed.png',
                '❌ 右尾偏離虛線向上\n表示有極端大值')
 
-# 2. 左偏分配（左尾下彎）- 使用 Beta 分配
+# 2. 左偏分配（左尾下彎）- 手工構造確保正確模式
 np.random.seed(150)
-beta_data = np.random.beta(a=8, b=2, size=n)  # 左偏的 beta 分配
-left_skewed = (beta_data - np.mean(beta_data)) / np.std(beta_data) * 0.8
+# 創建大部分接近常態的數據
+normal_base = np.random.normal(0, 0.8, n-5)
+# 手工添加少數小的負值，製造左偏
+left_outliers = np.array([-4.5, -4.0, -3.5, -3.0, -2.5])
+# 合併並排序
+left_skewed = np.concatenate([normal_base, left_outliers])
+left_skewed = np.sort(left_skewed)
 create_qq_plot(left_skewed, '左偏分配：左尾下彎', 'img/qq_left_skewed.png',
                '❌ 左尾偏離虛線向下\n表示有極端小值')
 
@@ -72,30 +81,34 @@ heavy_tail = (heavy_tail - np.mean(heavy_tail)) / np.std(heavy_tail)
 create_qq_plot(heavy_tail, '厚尾分配：兩端偏離', 'img/qq_heavy_tail.png',
                '❌ 兩端都偏離虛線\n表示有較多極端值')
 
-# 4. 薄尾分配（S型彎曲）- 使用截斷常態分配
+# 4. 薄尾分配（S型彎曲）- 手工構造
 np.random.seed(250)
-# 生成截斷在 [-1.5, 1.5] 的常態分配
-from scipy.stats import truncnorm
-a, b = -1.5, 1.5
-thin_tail_dist = truncnorm(a, b, loc=0, scale=0.8)
-thin_tail = thin_tail_dist.rvs(size=n)
+# 創建截斷範圍內的數據，避免極端值
+thin_data = []
+while len(thin_data) < n:
+    candidate = np.random.normal(0, 1)
+    if -1.8 <= candidate <= 1.8:  # 截斷極端值
+        thin_data.append(candidate)
+thin_tail = np.array(thin_data)
 create_qq_plot(thin_tail, '薄尾分配：S型彎曲', 'img/qq_thin_tail.png',
                '❌ S型彎曲模式\n表示缺乏極端值')
 
-# 5. 理想常態分配（對照組）
+# 5. 理想常態分配（對照組）- 手工構造確保完美
 np.random.seed(300)
-normal_data = np.random.normal(0, 1, n)
+# 手工創建接近理論常態分位數的數據
+theoretical_q = stats.norm.ppf(np.linspace(0.01, 0.99, n))
+# 添加小量隨機噪音，但保持接近理論值
+normal_data = theoretical_q + np.random.normal(0, 0.05, n)
 create_qq_plot(normal_data, '理想常態分配', 'img/qq_normal_ideal.png',
                '✅ 點接近虛線\n符合常態分布')
 
-# 6. 雙峰分配（非常態的另一種類型）
+# 6. 雙峰分配（非常態的另一種類型）- 手工構造
 np.random.seed(350)
-# 混合兩個常態分配
-mixture1 = np.random.normal(-1.5, 0.5, n//2)
-mixture2 = np.random.normal(1.5, 0.5, n//2)
-bimodal = np.concatenate([mixture1, mixture2])
+# 手工創建明顯的雙峰模式
+group1 = np.random.normal(-1.8, 0.4, n//2)
+group2 = np.random.normal(1.8, 0.4, n//2)
+bimodal = np.concatenate([group1, group2])
 np.random.shuffle(bimodal)  # 打亂順序
-bimodal = (bimodal - np.mean(bimodal)) / np.std(bimodal)
 create_qq_plot(bimodal, '雙峰分配：波浪狀', 'img/qq_bimodal.png',
                '❌ 波浪狀或階梯狀\n表示資料有分群現象')
 
